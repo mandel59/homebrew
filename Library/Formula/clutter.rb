@@ -16,13 +16,13 @@ class Clutter < Formula
   depends_on 'pango'
   depends_on 'json-glib'
   depends_on :x11 => '2.5.1' if build.with? 'x'
+  depends_on 'gobject-introspection' => :recommended
 
   def install
     args = %W[
       --disable-dependency-tracking
       --disable-debug
       --prefix=#{prefix}
-      --disable-introspection
       --disable-silent-rules
       --disable-Bsymbolic
       --disable-tests
@@ -43,6 +43,8 @@ class Clutter < Formula
         --enable-quartz-backend=yes
       }
     end
+
+    args << '--disable-introspection' if build.without? 'gobject-introspection'
 
     system './configure', *args
     system 'make install'
