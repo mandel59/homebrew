@@ -19,6 +19,7 @@ class Cogl < Formula
   depends_on 'glib'
   depends_on 'pango'
   depends_on :x11 => '2.5.1' if build.with? 'x'
+  depends_on 'gobject-introspection' => :recommended
 
   # Patch from MacPorts, reported upstream at https://bugzilla.gnome.org/show_bug.cgi?id=708825
   # https://trac.macports.org/browser/trunk/dports/graphics/cogl/files/patch-clock_gettime.diff
@@ -31,9 +32,9 @@ class Cogl < Formula
       --disable-silent-rules
       --prefix=#{prefix}
       --enable-cogl-pango=yes
-      --disable-introspection
     ]
     args << '--without-x' if build.without? 'x'
+    args << '--disable-introspection' if build.without? 'gobject-introspection'
     system './configure', *args
     system "make install"
   end
